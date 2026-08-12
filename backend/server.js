@@ -67,6 +67,7 @@ async function startServer() {
         console.log('✅ Connected to LFD database!');
         app.set('db', pool);
 
+        // Aha twahinduye izina rihuye n'iry'iyo muri folder ya routes (authroute.js)
         const authRoutes = require('./routes/authRoutes');
         const materialRoutes = require('./routes/materialRoutes');
 

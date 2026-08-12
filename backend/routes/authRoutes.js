@@ -3,6 +3,26 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+// ─────────────────────────────────────────
+// MIDDLEWARE: Genzura Token y'umukoresha
+// ─────────────────────────────────────────
+const verifyToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    
+    if (!token) {
+        return res.status(401).json({ message: "Nturi kubonekamo token (Unauthorized)!" });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) {
+            return res.status(403).json({ message: "Token ishaje cyangwa siyo." });
+        }
+        req.user = user; // Irimo id ya user twashyize muri token igihe yakoraga login
+        next();
+    });
+};
+
 // REGISTER — Yavuguruwe kugira ngo itabangamira abinjiza indangamuntu
 router.post('/register', async (req, res) => {
     const pool = req.app.get('db');
@@ -39,9 +59,12 @@ router.post('/login', async (req, res) => {
 
         const user = results[0];
 
-        // Genzura niba user blocked
+        // Genzura niba user blocked cyangwa yasibye account (deleted)
         if (user.status === 'blocked') {
             return res.status(403).json({ message: 'Account yawe ihagaritswe! Vugana na Admin.' });
+        }
+        if (user.status === 'deleted') {
+            return res.status(403).json({ message: 'Iyi konti yafunzwe cyangwa yasibwe.' });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
@@ -61,6 +84,28 @@ router.post('/login', async (req, res) => {
             user: { id: user.id, full_name: user.full_name }
         });
 
+    } catch (err) {
+        return res.status(500).json({ message: 'Error: ' + err.message });
+    }
+});
+
+// DELETE — Gusiba cyangwa gufunga konti (Soft Delete: data zigumaho)
+router.delete('/delete-account', verifyToken, async (req, res) => {
+    const pool = req.app.get('db');
+    const userId = req.user.id; // ID y'uwatashye ivuye muri Token
+
+    try {
+        // Duhindura status ya user ikaba 'deleted' kugira ngo posts/data ze zigume muri database
+        const [result] = await pool.query(
+            "UPDATE users SET status = 'deleted' WHERE id = ?", 
+            [userId]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "User ntabonetse." });
+        }
+
+        return res.status(200).json({ message: "Konti yawe yafunzwe cyangwa yasibwe neza! ✅" });
     } catch (err) {
         return res.status(500).json({ message: 'Error: ' + err.message });
     }

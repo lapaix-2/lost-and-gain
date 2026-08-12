@@ -60,8 +60,8 @@ router.post('/announce', verifyToken, upload.single('photo'), async (req, res) =
     const photo = req.file ? req.file.filename : null;
     try {
         await pool.query(
-            'INSERT INTO announced (announcer_name, material_name, photo) VALUES (?, ?, ?)',
-            [announcer_name, material_name, photo]
+            'INSERT INTO announced (announcer_name, material_name, photo, status) VALUES (?, ?, ?, ?)',
+            [announcer_name, material_name, photo, 'available']
         );
         res.status(201).json({ message: 'Watangaje neza!' });
     } catch (err) {
@@ -84,7 +84,22 @@ router.delete('/delete/:id', verifyToken, async (req, res) => {
     }
 });
 
-// POST — Claim request: Byongereye umwanya wo kwakira ifoto y'indangamuntu n'izindi zose nta nkomyi
+// ROUTE NSHYA: Guhindura status y'ikintu ikaba 'claimed' (Iyi ni yo ivugurura ako kanya ko cyabonekejwe)
+router.put('/claim/:id', verifyToken, async (req, res) => {
+    const pool = req.app.get('db');
+    const itemId = req.params.id;
+    try {
+        const [posts] = await pool.query('SELECT * FROM announced WHERE id = ?', [itemId]);
+        if (posts.length === 0) return res.status(404).json({ message: 'Ikintu ntikibonetse!' });
+
+        await pool.query("UPDATE announced SET status = 'claimed' WHERE id = ?", [itemId]);
+        res.json({ message: 'Ikintu cyashyizweho ko cyabonekejwe (claimed) neza!' });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// POST — Claim request: Kwakira ifoto y'indangamuntu n'izindi zose nta nkomyi
 router.post('/claim-request/:id', verifyToken, upload.fields([
     { name: 'id_card_photo', maxCount: 1 }, 
     { name: 'selfie', maxCount: 1 }
@@ -136,6 +151,9 @@ router.post('/claim-request/:id', verifyToken, upload.fields([
              sector, umudugudu, phone, idCardPhotoFilename, selfieFilename]
         );
 
+        // Guhita duhindura n'ubundi status y'ikintu ikaba claimed mu gihe claim yasabwe
+        await pool.query("UPDATE announced SET status = 'claimed' WHERE id = ?", [postId]);
+
         const announcer_name = posts[0].announcer_name;
         const material_name = posts[0].material_name;
         const notificationMessage = `${requester_name} yemeje ko icyo watangaje ("${material_name}") ari icye kandi yatanze n'ibimenyetso. Nimero ye ni ${phone}.`;
@@ -160,7 +178,7 @@ router.put('/admin/claim-requests/approve/:id', async (req, res) => {
         const request = requests[0];
 
         await pool.query('UPDATE claim_requests SET status = ? WHERE id = ?', ['approved', req.params.id]);
-        await pool.query('UPDATE announced SET status = ? WHERE id = ?', ['claimed', request.post_id]);
+        await pool.query('UPDATE announced SET status = ?, updated_at = NOW() WHERE id = ?', ['claimed', request.post_id]);
         await pool.query(
             'INSERT INTO lost_found (receiver_name, material_name) VALUES (?, ?)',
             [request.claimer_name, request.material_name]
@@ -177,6 +195,21 @@ router.put('/admin/claim-requests/reject/:id', async (req, res) => {
     try {
         await pool.query('UPDATE claim_requests SET status = ? WHERE id = ?', ['rejected', req.params.id]);
         res.json({ message: 'Request yananiwe!' });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+router.get('/already-found', async (req, res) => {
+    const pool = req.app.get('db');
+    try {
+        const query = `
+            SELECT * FROM announced 
+            WHERE status = 'claimed'
+            ORDER BY date_announced DESC
+        `;
+        const [results] = await pool.query(query);
+        res.json(results);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

@@ -1,0 +1,101 @@
+/* 1. Global Reset & Box Sizing */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #0d1117;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* 2. Scrollbar Customization for Modern Look */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111827;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e3a5f;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+/* 3. Responsive Utility Classes & Layout Adjustments */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Flexbox responsive helper */
+.responsive-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Grid responsive helper for items/cards */
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* 4. Media Queries for Mobile and Tablet Screens */
+@media screen and (max-width: 1024px) {
+  .responsive-flex {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  /* Adjust padding and margins globally on mobile */
+  .container {
+    padding: 0 15px;
+  }
+
+  h1 {
+    font-size: 26px !important;
+  }
+
+  h2 {
+    font-size: 22px !important;
+  }
+
+  /* Make buttons full width or easier to tap on mobile */
+  button {
+    width: 100%;
+    max-width: 300px;
+    margin: 5px auto;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  h1 {
+    font-size: 22px !important;
+  }
+  
+  .responsive-grid {
+    grid-template-columns: 1fr;
+  }
+}
