@@ -78,11 +78,10 @@ async function startServer() {
             res.json({ message: 'Welcome to Lost and Gain API!' });
         });
 
-        const PORT = 4000;
-        // 5. Hindura app.listen ikaba server.listen kugira ngo Socket.io ikore neza kuri port imwe
-        server.listen(PORT, () => {
-            console.log(`🚀 Server running on port ${PORT}`);
-        });
+       const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
 
     } catch (err) {
         console.log('Database connection failed:', err);
