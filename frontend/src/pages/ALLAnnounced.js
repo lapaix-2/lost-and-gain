@@ -18,7 +18,7 @@ function AllAnnounced() {
     const fetchAnnouncements = async () => {
         try {
             setLoading(true);
-            const response = await axios.get('http://https://lost-and-gain-backend.onrender.com/api/materials', {
+            const response = await axios.get('https://lost-and-gain-backend.onrender.com/api/materials', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             setPosts(response.data);
@@ -90,7 +90,7 @@ function AllAnnounced() {
                     <div key={post.id} style={cardStyle}>
                         {post.photo && (
                             <img 
-                                src={`http://https://lost-and-gain-backend.onrender.com/uploads/${post.photo}`} 
+                                src={`https://lost-and-gain-backend.onrender.com/uploads/${post.photo}`} 
                                 alt={post.material_name} 
                                 style={imageStyle} 
                             />

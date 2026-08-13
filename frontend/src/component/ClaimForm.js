@@ -44,7 +44,7 @@ function ClaimForm({ postId, onClose, onSuccess }) {
             setLoading(true);
             const token = localStorage.getItem('token');
             
-            const response = await axios.post(`http://https://lost-and-gain-backend.onrender.com/api/materials/claim-request/${postId}`, formData, {
+            const response = await axios.post(`https://lost-and-gain-backend.onrender.com/api/materials/claim-request/${postId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${token}`

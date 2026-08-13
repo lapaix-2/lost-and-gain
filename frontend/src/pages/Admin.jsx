@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -31,7 +29,7 @@ function Admin() {
   // Kwihuza na Socket.io igihe Admin yemewe
   useEffect(() => {
     if (authenticated) {
-      const socket = io('http://https://lost-and-gain-backend.onrender.com');
+      const socket = io('https://lost-and-gain-backend.onrender.com');
 
       socket.on('update_online_users', (activeList) => {
         setOnlineUsersList(activeList);
@@ -58,10 +56,10 @@ function Admin() {
     setLoading(true);
     try {
       const [postsRes, usersRes, msgsRes, claimRes] = await Promise.all([
-        axios.get('http://https://lost-and-gain-backend.onrender.com/api/materials/admin/posts'),
-        axios.get('http://https://lost-and-gain-backend.onrender.com/api/auth/admin/users'),
-        axios.get('http://https://lost-and-gain-backend.onrender.com/api/auth/messages/admin/all'),
-        axios.get('http://https://lost-and-gain-backend.onrender.com/api/materials/admin/claim-requests')
+        axios.get('https://lost-and-gain-backend.onrender.com/api/materials/admin/posts'),
+        axios.get('https://lost-and-gain-backend.onrender.com/api/auth/admin/users'),
+        axios.get('https://lost-and-gain-backend.onrender.com/api/auth/messages/admin/all'),
+        axios.get('https://lost-and-gain-backend.onrender.com/api/materials/admin/claim-requests')
       ]);
       setPosts(postsRes.data);
       setUsers(usersRes.data);
@@ -82,7 +80,7 @@ function Admin() {
     if (!window.confirm('Urashaka gusiba iyi post?')) return;
     try {
       const token = localStorage.getItem('token');
-      await axios.delete('http://https://lost-and-gain-backend.onrender.com/api/materials/delete/' + id, {
+      await axios.delete('https://lost-and-gain-backend.onrender.com/api/materials/delete/' + id, {
         headers: { authorization: 'Bearer ' + token }
       });
       fetchAllData();
@@ -94,7 +92,7 @@ function Admin() {
   const handleBlock = async (id) => {
     if (!window.confirm('Urashaka guhagarika iyi account?')) return;
     try {
-      await axios.put('http://https://lost-and-gain-backend.onrender.com/api/auth/admin/block/' + id);
+      await axios.put('https://lost-and-gain-backend.onrender.com/api/auth/admin/block/' + id);
       fetchAllData();
     } catch (err) { alert('Habaye ikosa!'); }
   };
@@ -102,7 +100,7 @@ function Admin() {
   const handleUnblock = async (id) => {
     if (!window.confirm('Urashaka gusubiza iyi account?')) return;
     try {
-      await axios.put('http://https://lost-and-gain-backend.onrender.com/api/auth/admin/unblock/' + id);
+      await axios.put('https://lost-and-gain-backend.onrender.com/api/auth/admin/unblock/' + id);
       fetchAllData();
     } catch (err) { alert('Habaye ikosa!'); }
   };
@@ -110,7 +108,7 @@ function Admin() {
   const handleReply = async (id) => {
     if (!replyText[id]?.trim()) return;
     try {
-      await axios.put('http://https://lost-and-gain-backend.onrender.com/api/auth/messages/reply/' + id, {
+      await axios.put('https://lost-and-gain-backend.onrender.com/api/auth/messages/reply/' + id, {
         reply: replyText[id]
       });
       setReplyText({ ...replyText, [id]: '' });
@@ -121,7 +119,7 @@ function Admin() {
   const handleApprove = async (id) => {
     if (!window.confirm('Urashaka kwemeza iyi request?')) return;
     try {
-      await axios.put('http://https://lost-and-gain-backend.onrender.com/api/materials/admin/claim-requests/approve/' + id);
+      await axios.put('https://lost-and-gain-backend.onrender.com/api/materials/admin/claim-requests/approve/' + id);
       fetchAllData();
     } catch (err) { alert('Habaye ikosa!'); }
   };
@@ -129,7 +127,7 @@ function Admin() {
   const handleReject = async (id) => {
     if (!window.confirm('Urashaka guta iyi request?')) return;
     try {
-      await axios.put('http://https://lost-and-gain-backend.onrender.com/api/materials/admin/claim-requests/reject/' + id);
+      await axios.put('https://lost-and-gain-backend.onrender.com/api/materials/admin/claim-requests/reject/' + id);
       fetchAllData();
     } catch (err) { alert('Habaye ikosa!'); }
   };
@@ -282,7 +280,7 @@ function Admin() {
                     {filteredPosts.map((post) => (
                       <div key={post.id} style={{...styles.postCard, opacity: post.status === 'claimed' ? 0.7 : 1}}>
                         {post.photo ? (
-                          <img src={'http://https://lost-and-gain-backend.onrender.com/uploads/' + post.photo} alt={post.material_name} style={styles.postImage} />
+                          <img src={'https://lost-and-gain-backend.onrender.com/uploads/' + post.photo} alt={post.material_name} style={styles.postImage} />
                         ) : (
                           <div style={styles.noImage}>📦</div>
                         )}
@@ -464,13 +462,13 @@ function Admin() {
                           <div style={styles.claimInfoRight}>
                             <p style={styles.idLabel}>Indangamuntu — Imbere</p>
                             <img
-                              src={'http://https://lost-and-gain-backend.onrender.com/uploads/' + req.id_card_front}
+                              src={'https://lost-and-gain-backend.onrender.com/uploads/' + req.id_card_front}
                               alt="ID Front"
                               style={styles.idImage}
                             />
                             <p style={styles.idLabel}>Indangamuntu — Inyuma</p>
                             <img
-                              src={'http://https://lost-and-gain-backend.onrender.com/uploads/' + req.id_card_back}
+                              src={'https://lost-and-gain-backend.onrender.com/uploads/' + req.id_card_back}
                               alt="ID Back"
                               style={styles.idImage}
                             />

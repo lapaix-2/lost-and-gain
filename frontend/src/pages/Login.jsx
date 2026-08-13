@@ -11,7 +11,7 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://https://lost-and-gain-backend.onrender.com/api/auth/login', {
+      const res = await axios.post('https://lost-and-gain-backend.onrender.com/api/auth/login', {
         id_card: idCard,
         password: password
       });
