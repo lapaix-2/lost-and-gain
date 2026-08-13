@@ -16,7 +16,7 @@ function Profile() {
   const fetchProfile = async () => {
     try {
       const res = await axios.get(
-        'http://localhost:4000/api/auth/userinfo/' + encodeURIComponent(user.full_name),
+        'http://https://lost-and-gain-backend.onrender.com/api/auth/userinfo/' + encodeURIComponent(user.full_name),
         { headers: { authorization: 'Bearer ' + token } }
       );
       setProfile(res.data);

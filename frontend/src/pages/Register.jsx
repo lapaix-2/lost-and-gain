@@ -26,7 +26,7 @@ function Register() {
       return;
     }
     try {
-      const res = await axios.post('http://localhost:4000/api/auth/register', form);
+      const res = await axios.post('http://https://lost-and-gain-backend.onrender.com/api/auth/register', form);
       setMessage(res.data.message);
       setTimeout(() => navigate('/'), 2000);
     } catch (err) {

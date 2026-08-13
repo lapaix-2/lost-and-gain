@@ -27,7 +27,7 @@ function Map() {
   useEffect(() => {
     const fetchAnnouncements = async () => {
         try {
-            const response = await axios.get('http://localhost:4000/api/materials', {
+            const response = await axios.get('http://https://lost-and-gain-backend.onrender.com/api/materials', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             setPosts(response.data);
@@ -84,7 +84,7 @@ function Map() {
                       <div style={{ color: '#000' }}>
                         {post.photo && (
                           <img 
-                            src={`http://localhost:4000/uploads/${post.photo}`} 
+                            src={`http://https://lost-and-gain-backend.onrender.com/uploads/${post.photo}`} 
                             alt={post.material_name} 
                             style={{ width: '100px', height: '70px', objectFit: 'cover', borderRadius: '4px' }} 
                           />

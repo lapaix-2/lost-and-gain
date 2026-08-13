@@ -80,12 +80,12 @@ function Settings() {
 
   const fetchSettings = async () => {
     try {
-      const res = await axios.get('http://localhost:4000/api/auth/settings/' + user.id);
+      const res = await axios.get('http://https://lost-and-gain-backend.onrender.com/api/auth/settings/' + user.id);
       setSettings(res.data);
       setTheme(res.data.theme || 'light');
       setLanguage(res.data.language || 'english');
       if (res.data.profile_pic) {
-        setPreviewPic('http://localhost:4000/uploads/' + res.data.profile_pic);
+        setPreviewPic('http://https://lost-and-gain-backend.onrender.com/uploads/' + res.data.profile_pic);
       }
       setLoading(false);
     } catch (err) {
@@ -96,7 +96,7 @@ function Settings() {
 
   const handleSaveTheme = async () => {
     try {
-      await axios.put('http://localhost:4000/api/auth/settings/theme/' + user.id, { theme });
+      await axios.put('http://https://lost-and-gain-backend.onrender.com/api/auth/settings/theme/' + user.id, { theme });
       localStorage.setItem('theme', theme);
       setMessage(t.saved);
       setTimeout(() => setMessage(''), 3000);
@@ -105,7 +105,7 @@ function Settings() {
 
   const handleSaveLanguage = async () => {
     try {
-      await axios.put('http://localhost:4000/api/auth/settings/language/' + user.id, { language });
+      await axios.put('http://https://lost-and-gain-backend.onrender.com/api/auth/settings/language/' + user.id, { language });
       localStorage.setItem('language', language);
       setMessage(t.saved);
       setTimeout(() => setMessage(''), 3000);
@@ -118,10 +118,10 @@ function Settings() {
       const formData = new FormData();
       formData.append('profile_pic', profilePic);
       const res = await axios.put(
-        'http://localhost:4000/api/auth/settings/profilepic/' + user.id,
+        'http://https://lost-and-gain-backend.onrender.com/api/auth/settings/profilepic/' + user.id,
         formData
       );
-      setPreviewPic('http://localhost:4000/uploads/' + res.data.filename);
+      setPreviewPic('http://https://lost-and-gain-backend.onrender.com/uploads/' + res.data.filename);
       setMessage(t.saved);
       setTimeout(() => setMessage(''), 3000);
     } catch (err) { setMessage(t.error); }
@@ -129,7 +129,7 @@ function Settings() {
 
   const handleRemovePic = async () => {
     try {
-      await axios.delete('http://localhost:4000/api/auth/settings/profilepic/' + user.id);
+      await axios.delete('http://https://lost-and-gain-backend.onrender.com/api/auth/settings/profilepic/' + user.id);
       setPreviewPic(null);
       setProfilePic(null);
       setMessage(t.saved);
@@ -142,7 +142,7 @@ function Settings() {
     const confirmation = window.confirm(t.confirmDelete);
     if (confirmation) {
       try {
-        const response = await axios.delete('http://localhost:4000/api/auth/delete-account', {
+        const response = await axios.delete('http://https://lost-and-gain-backend.onrender.com/api/auth/delete-account', {
           headers: { Authorization: `Bearer ${token}` }
         });
 

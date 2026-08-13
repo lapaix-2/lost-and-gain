@@ -32,28 +32,28 @@ function Dashboard() {
 
   const fetchMyMessages = async () => {
     try {
-      const res = await axios.get('http://localhost:4000/api/auth/messages/mine/' + encodeURIComponent(user.full_name));
+      const res = await axios.get('http://https://lost-and-gain-backend.onrender.com/api/auth/messages/mine/' + encodeURIComponent(user.full_name));
       setMyMessages(res.data);
     } catch (err) { console.log(err); }
   };
 
   const fetchNotifications = async () => {
     try {
-      const res = await axios.get('http://localhost:4000/api/auth/notifications/' + encodeURIComponent(user.full_name));
+      const res = await axios.get('http://https://lost-and-gain-backend.onrender.com/api/auth/notifications/' + encodeURIComponent(user.full_name));
       setNotifications(res.data);
     } catch (err) { console.log(err); }
   };
 
   const markAllRead = async () => {
     try {
-      await axios.put('http://localhost:4000/api/auth/notifications/readall/' + encodeURIComponent(user.full_name));
+      await axios.put('http://https://lost-and-gain-backend.onrender.com/api/auth/notifications/readall/' + encodeURIComponent(user.full_name));
       fetchNotifications();
     } catch (err) { console.log(err); }
   };
 
   const fetchStats = async () => {
     try {
-      const res = await axios.get('http://localhost:4000/api/materials', {
+      const res = await axios.get('http://https://lost-and-gain-backend.onrender.com/api/materials', {
         headers: { authorization: 'Bearer ' + token }
       });
       const all = res.data;
@@ -74,7 +74,7 @@ function Dashboard() {
       const formData = new FormData();
       formData.append('material_name', materialName);
       formData.append('photo', photo);
-      const res = await axios.post('http://localhost:4000/api/materials/announce', formData, {
+      const res = await axios.post('http://https://lost-and-gain-backend.onrender.com/api/materials/announce', formData, {
         headers: { authorization: 'Bearer ' + token }
       });
       setMessage(res.data.message);
@@ -88,7 +88,7 @@ function Dashboard() {
     e.preventDefault();
     if (!msgText.trim()) return;
     try {
-      await axios.post('http://localhost:4000/api/auth/messages/send', {
+      await axios.post('http://https://lost-and-gain-backend.onrender.com/api/auth/messages/send', {
         sender_name: user.full_name, message: msgText
       });
       setMsgSent('Message yoherejwe neza!');
@@ -256,7 +256,7 @@ function Dashboard() {
                 {recentPosts.map(post => (
                   <div key={post.id} style={styles.recentCard}>
                     {post.photo ? (
-                      <img src={'http://localhost:4000/uploads/' + post.photo} alt={post.material_name} style={styles.recentImg} />
+                      <img src={'http://https://lost-and-gain-backend.onrender.com/uploads/' + post.photo} alt={post.material_name} style={styles.recentImg} />
                     ) : (
                       <div style={styles.recentNoImg}>📦</div>
                     )}
