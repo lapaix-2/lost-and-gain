@@ -2,8 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 
-// 1. Gushyiraho Base URL ya Render na Axios Interceptor kugira ngo itware Token muri buri request
-axios.defaults.baseURL = 'https://lost-and-gain-backend.onrender.com'; // Hindura niba URL yawe ya backend itandukanye niyi
+axios.defaults.baseURL = 'https://lost-and-gain-backend.onrender.com';
 
 axios.interceptors.request.use(
     (config) => {
