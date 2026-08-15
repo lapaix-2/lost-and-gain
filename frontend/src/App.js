@@ -2,6 +2,19 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import AllAnnounced from './pages/ALLAnnounced';
+import Profile from './pages/Profile';
+import Admin from './pages/Admin';
+import Settings from './pages/Settings';
+import Terms from './pages/Terms';
+import Map from './pages/Map';
+import About from './pages/About';
+
+// Gushyiraho Base URL na Axios Interceptor hepfo y'ama-imports yose
 axios.defaults.baseURL = 'https://lost-and-gain-backend.onrender.com';
 
 axios.interceptors.request.use(
@@ -16,18 +29,6 @@ axios.interceptors.request.use(
         return Promise.reject(error);
     }
 );
-
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import AllAnnounced from './pages/ALLAnnounced';
-import Profile from './pages/Profile';
-import Admin from './pages/Admin';
-import Settings from './pages/Settings';
-import Terms from './pages/Terms';
-import Map from './pages/Map';
-import About from './pages/About';
 
 function App() {
   return (
