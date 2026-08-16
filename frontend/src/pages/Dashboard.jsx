@@ -56,12 +56,12 @@ function Dashboard() {
       const res = await axios.get('https://lost-and-gain-backend.onrender.com/api/materials', {
         headers: { authorization: 'Bearer ' + token }
       });
-      const all = res.data;
+      const all = res.data || [];
       setRecentPosts(all.slice(0, 4));
       setStats({
         posts: all.length,
-        claimed: all.filter(p => p.status === 'claimed').length,
-        active: all.filter(p => p.status === 'active').length
+        claimed: all.filter(p => p.status === 'claimed' || p.claimed === 1).length,
+        active: all.filter(p => p.status === 'active' || !p.status || p.claimed === 0).length
       });
     } catch (err) { console.log(err); }
   };
@@ -265,9 +265,9 @@ function Dashboard() {
                       <p style={styles.recentAnnouncer}>{post.announcer_name}</p>
                       <span style={{
                         ...styles.recentBadge,
-                        backgroundColor: post.status === 'claimed' ? '#2ecc71' : '#e67e22'
+                        backgroundColor: (post.status === 'claimed' || post.claimed === 1) ? '#2ecc71' : '#e67e22'
                       }}>
-                        {post.status === 'claimed' ? 'Yaboneshejwe' : 'Biracyashakwa'}
+                        {(post.status === 'claimed' || post.claimed === 1) ? 'Yaboneshejwe' : 'Biracyashakwa'}
                       </span>
                     </div>
                   </div>
