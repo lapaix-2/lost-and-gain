@@ -13,7 +13,9 @@ function AllAnnounced() {
     const [isClaimOpen, setIsClaimOpen] = useState(false);
 
     const navigate = useNavigate();
-    const token = localStorage.getItem('token');
+    
+    // Guhuza neza ishakwa rya token yaba 'token' cyangwa 'authToken'
+    const token = localStorage.getItem('token') || localStorage.getItem('authToken');
 
     const fetchAnnouncements = async () => {
         try {
@@ -41,7 +43,6 @@ function AllAnnounced() {
         fetchAnnouncements();
     }, [token, navigate]);
 
-    // Gufungura Google Maps bifashishije amakuru y'aho ikintu cyatorerewe
     const openGoogleMap = (province, district, sector) => {
         const address = `${sector || ''}, ${district || ''}, ${province || ''}, Rwanda`;
         const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
@@ -57,7 +58,6 @@ function AllAnnounced() {
 
     return (
         <div style={containerStyle}>
-            {/* Header yihariye yerekana Links zo gusubira kuri Dashboard na Profile hejuru iburyo */}
             <div style={headerNavStyle}>
                 <h2 style={{ margin: 0 }}>Ibintu Byose Byatangajwe</h2>
                 <div style={navLinksStyle}>
@@ -66,7 +66,6 @@ function AllAnnounced() {
                 </div>
             </div>
             
-            {/* Search Input Bar */}
             <div style={{ margin: '20px 0' }}>
                 <input 
                     type="text" 
@@ -100,7 +99,6 @@ function AllAnnounced() {
                         <p><strong>Akarere/Umurenge:</strong> {post.district || 'N/A'}, {post.sector || 'N/A'}</p>
                         <p><strong>Itariki:</strong> {new Date(post.date_announced).toLocaleDateString()}</p>
                         
-                        {/* Status y'ikintu */}
                         <p>
                             <strong>Status:</strong>{' '}
                             <span style={{ color: post.status === 'claimed' ? '#e74c3c' : '#2ecc71', fontWeight: 'bold' }}>
@@ -108,7 +106,6 @@ function AllAnnounced() {
                             </span>
                         </p>
 
-                        {/* Map Icon / Button yo kureba aho biherereye */}
                         <button 
                             onClick={() => openGoogleMap(post.province, post.district, post.sector)}
                             style={mapButtonStyle}
@@ -117,7 +114,6 @@ function AllAnnounced() {
                             🗺️ Reba kuri Map
                         </button>
 
-                        {/* Niba cyabaye claimed yerekana badge, niba kitarayibona yerekana buto yo gukora claim */}
                         {post.status === 'claimed' ? (
                             <div style={claimedBadgeStyle}>
                                 🔒 Claimed / Resolved
@@ -150,7 +146,6 @@ function AllAnnounced() {
     );
 }
 
-// Imiterere n'uburyo bwa design (Styles)
 const containerStyle = { 
     width: '100%', 
     minHeight: '100vh', 

@@ -15,9 +15,18 @@ function Login() {
         id_card: idCard,
         password: password
       });
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
-      navigate('/dashboard');
+
+      // Gufata token yaba yitwa 'token' cyangwa 'accessToken' kugira ngo idacika
+      const receivedToken = res.data.token || res.data.accessToken || res.data.data?.token;
+      const receivedUser = res.data.user || res.data.data?.user;
+
+      if (receivedToken) {
+        localStorage.setItem('token', receivedToken);
+        localStorage.setItem('user', JSON.stringify(receivedUser || {}));
+        navigate('/dashboard');
+      } else {
+        setMessage('Login yagenze neza ariko token ntabwo yabonetse muri Server response!');
+      }
     } catch (err) {
       setMessage(err.response?.data?.message || 'Habaye ikosa!');
     }
@@ -56,7 +65,6 @@ function Login() {
           Nta konti ufite? <Link to="/register" style={{ color: '#3498db' }}>Iyandikishe hano</Link>
         </p>
 
-        {/* Link ya Terms & Privacy yongejwe hano */}
         <p style={{ marginTop: '10px', fontSize: '13px', color: '#888' }}>
           By logging in, you agree to our <Link to="/terms" style={{ color: '#3498db' }}>Terms & Privacy</Link>
         </p>
